@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather Information</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+      background: #1a1a1a; /* blackish */
+      color: #ffe4f0; /* soft pink text */
+    }
+    .weather-box {
+      margin-top: 20px;
+      padding: 20px;
+      display: inline-block;
+      border-radius: 10px;
+      background: #2b2b2b; /* dark card */
+      box-shadow: 0 2px 6px rgba(255,192,203,0.3);
+      min-width: 250px;
+      color: #fff;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 20px;
+      border-radius: 5px;
+      background: #ffb6c1; /* pastel pink */
+      color: #000;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #ff99aa;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Weather Details</h1>
+
+  <div class="weather-box">
+    <h2 id="cityName">City</h2>
+    <p><strong>Temperature:</strong> <span id="temp">--</span> °C</p>
+    <p><strong>Condition:</strong> <span id="condition">--</span></p>
+    <p><strong>Humidity:</strong> <span id="humidity">--</span>%</p>
+  </div>
+
+  <button onclick="goBack()">Back</button>
+
+  <script>
+    function goBack() {
+      window.history.back();
+    }
+
+    // Optional: Auto-fill from localStorage
+    const lastCity = localStorage.getItem("lastCity");
+    if (lastCity) {
+      fetch(`https://wttr.in/${encodeURIComponent(lastCity)}?format=j1`)
+        .then(response => response.json())
+        .then(data => {
+          const current = data.current_condition[0];
+          document.getElementById("cityName").textContent = lastCity;
+          document.getElementById("temp").textContent = current.temp_C;
+          document.getElementById("condition").textContent = current.weatherDesc[0].value;
+          document.getElementById("humidity").textContent = current.humidity;
+        })
+        .catch(error => {
+          document.querySelector(".weather-box").innerHTML = `<p style="color:#ff99aa;">${error.message}</p>`;
+        });
+    }
+  </script>
+
+</body>
+</html>
