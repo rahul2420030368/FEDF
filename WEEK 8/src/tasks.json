@@ -1,0 +1,17 @@
+[
+  {
+    "id": "1",
+    "text": "Read a book",
+    "completed": false
+  },
+  {
+    "id": "2",
+    "text": "Clean the workspace",
+    "completed": true
+  },
+  {
+    "id": "3",
+    "text": "Practice React",
+    "completed": false
+  }
+]
