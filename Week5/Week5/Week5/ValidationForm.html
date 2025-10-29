@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validated HTML Form with JavaScript</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a; /* blackish */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #ffe4f0; /* pastel pink text */
+        }
+        form {
+            background: #2b2b2b;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(255,192,203,0.3);
+            width: 320px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 4px;
+            border: 1px solid #666;
+            background: #333;
+            color: #fff;
+        }
+        .error {
+            color: #ff99aa; /* pastel red-pink */
+            font-size: 12px;
+        }
+        button {
+            margin-top: 15px;
+            width: 100%;
+            padding: 10px;
+            background-color: #b6f0b6; /* pastel green */
+            color: #000;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #9be29b;
+        }
+    </style>
+</head>
+<body>
+
+<form id="myForm" action="#" method="post" novalidate>
+    <label for="fullname">Full Name:</label>
+    <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
+    <div class="error" id="fullnameError"></div>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+    <div class="error" id="emailError"></div>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+    <div class="error" id="passwordError"></div>
+
+    <label for="phone">Phone Number:</label>
+    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+    <div class="error" id="phoneError"></div>
+
+    <button type="submit">Submit</button>
+</form>
+
+<script>
+    const fullname = document.getElementById('fullname');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const phone = document.getElementById('phone');
+
+    const fullnameError = document.getElementById('fullnameError');
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+    const phoneError = document.getElementById('phoneError');
+
+    fullname.addEventListener('input', () => {
+        if (fullname.value.trim() === "") {
+            fullnameError.textContent = "Full name is required.";
+        } else {
+            fullnameError.textContent = "";
+        }
+    });
+
+    email.addEventListener('input', () => {
+        const emailPattern = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+        if (email.value.trim() === "") {
+            emailError.textContent = "Email is required.";
+        } else if (!emailPattern.test(email.value)) {
+            emailError.textContent = "Invalid email format.";
+        } else {
+            emailError.textContent = "";
+        }
+    });
+
+    password.addEventListener('input', () => {
+        const minLength = 6;
+        const hasUpper = /[A-Z]/.test(password.value);
+        const hasLower = /[a-z]/.test(password.value);
+        const hasNumber = /[0-9]/.test(password.value);
+        const hasSpecial = /[@$!%*?&]/.test(password.value);
+
+        if (password.value.trim() === "") {
+            passwordError.textContent = "Password is required.";
+        } else if (password.value.length < minLength) {
+            passwordError.textContent = "Password must be at least 6 characters.";
+        } else if (!(hasUpper && hasLower && hasNumber && hasSpecial)) {
+            passwordError.textContent = "Use upper, lower, number & special char.";
+        } else {
+            passwordError.textContent = "";
+        }
+    });
+
+    phone.addEventListener('input', () => {
+        const phonePattern = /^[0-9]{10}$/;
+        if (phone.value.trim() === "") {
+            phoneError.textContent = "Phone number is required.";
+        } else if (!phonePattern.test(phone.value)) {
+            phoneError.textContent = "Phone must be exactly 10 digits.";
+        } else {
+            phoneError.textContent = "";
+        }
+    });
+
+    document.getElementById('myForm').addEventListener('submit', function(event) {
+        if (fullnameError.textContent || emailError.textContent || passwordError.textContent || phoneError.textContent) {
+            event.preventDefault();
+            alert("Please fix the errors before submitting.");
+        }
+    });
+</script>
+
+</body>
+</html>
